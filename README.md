@@ -6,6 +6,12 @@ capture web page screenshot and save it to GCS.
 
 [![Cloud Scheduler jobs](https://i.gyazo.com/b4413d146127968232ea6e8e9691105d.png)](https://gyazo.com/b4413d146127968232ea6e8e9691105d)
 
+## Pub/Sub message attr
+- `uri`: uri
+- `prefix`: GCS key prefix
+  - screenshot will save to `${prefix}${yyyy}/${MM}/${dd}-${hh}${mm}${ss}.jpg`
+- `width`, `height`: viewport size
+
 ## コンソールポチポチで作られたもの
 
 - [Pub/Sub topic, Cloud Scheduler job](https://cloud.google.com/scheduler/docs/tut-pub-sub)
