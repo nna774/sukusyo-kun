@@ -10,6 +10,7 @@ capture web page screenshot and save it to GCS.
 - `uri`: uri
 - `prefix`: GCS key prefix
   - screenshot will save to `${prefix}${yyyy}/${MM}/${dd}-${hh}${mm}${ss}.jpg`
+- `bucket`: GCS bucket name(not `gs://bucket`, use `bucket`)
 - `width`, `height`: viewport size
 
 ## コンソールポチポチで作られたもの
