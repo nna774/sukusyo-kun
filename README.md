@@ -16,7 +16,7 @@ capture web page screenshot and save it to GCS.
 
 - [Pub/Sub topic, Cloud Scheduler job](https://cloud.google.com/scheduler/docs/tut-pub-sub)
 - GCS Bucket
-- Service Account
+- Service Account(this account should have [Storage Object Creator](https://cloud.google.com/storage/docs/access-control/iam-roles#standard-roles) role)
 
 ## 埋め込まれた定数の一覧
 そのうち気合いが出たら剥がす。
