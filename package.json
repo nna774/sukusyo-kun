@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --entry=./index.ts && cp -f ./package.json ./dist",
-    "deploy": "gcloud functions deploy sukusyo-kun --source=./dist --entry-point=main --runtime=nodejs14 --project=united-crane-800 --trigger-http",
+    "deploy": "gcloud functions deploy sukusyo-kun --source=./dist --entry-point=main --runtime=nodejs14 --project=united-crane-800 --trigger-topic=sukusyo-kun --service-account=sukusyo-kun@united-crane-800.iam.gserviceaccount.com --memory 1GB",
+    "log": "gcloud functions logs read --project=united-crane-800 sukusyo-kun",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nana Kugayama <nana@nna774.net> (https://github.com/nna774)",
   "license": "MIT",
   "devDependencies": {
+    "@types/puppeteer": "^5.4.4",
     "ts-loader": "^9.2.5",
     "typescript": "^4.3.5",
     "webpack": "^5.50.0",
@@ -18,6 +20,9 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@google-cloud/functions-framework": "^1.9.0"
+    "@google-cloud/functions-framework": "^1.9.0",
+    "@google-cloud/pubsub": "^2.16.3",
+    "@google-cloud/storage": "^5.13.0",
+    "puppeteer": "^10.2.0"
   }
 }
