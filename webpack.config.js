@@ -21,5 +21,8 @@ module.exports = {
     path: __dirname + "/dist",
     filename: "index.js",
     libraryTarget: "commonjs"
-  }
+  },
+  optimization:{
+    minimize: false
+}
 }
