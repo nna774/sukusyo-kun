@@ -22,7 +22,6 @@ capture web page screenshot and save it to GCS.
 そのうち気合いが出たら剥がす。
 
 - [project name, sevice account, etc...](https://github.com/nna774/sukusyo-kun/blob/5630be3636ebee4a8a2e684a797dd7da0b9f9fa5/package.json#L8-L9)
-- [bucket name](https://github.com/nna774/sukusyo-kun/blob/5630be3636ebee4a8a2e684a797dd7da0b9f9fa5/index.ts#L6)
 
 ## LICENSE
 

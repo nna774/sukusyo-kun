@@ -3,10 +3,9 @@ import { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 import { Storage } from '@google-cloud/storage';
 import puppeteer from 'puppeteer';
 
-const BUCKET = 'sukusyo-kun';
-
 const UriKey = 'uri';
 const PrefixKey = 'prefix';
+const BucketKey = 'bucket';
 const WidthKey = 'width';
 const HeightKey = 'height';
 
@@ -34,26 +33,27 @@ const takeScreenshot = async (uri: string, width: number, height: number): Promi
   return (await page.screenshot({type: 'jpeg'}) as Buffer);
 }
 
-const save = async (screenshot: Buffer, key: string) => {
+const save = async (bucket: string, screenshot: Buffer, key: string) => {
   const storage = new Storage();
-  await storage.bucket(BUCKET).file(key).save(screenshot);
+  await storage.bucket(bucket).file(key).save(screenshot);
 }
 
 const main = async (event: PubsubMessage, ctx: Context) => {
   console.log('start')
 //  if (!event.data) throw 'data is empty';
 //  console.log(Buffer.from(event.data as string, 'base64').toString())
-  if (!event.attributes || event.attributes[UriKey] === '' || event.attributes[PrefixKey] === '' ) {
+  if (!event.attributes || !event.attributes[UriKey] || !event.attributes[PrefixKey] || !event.attributes[BucketKey]) {
     throw `bad attributes ${event.attributes}`;
   }
   const uri = event.attributes[UriKey];
   const prefix = event.attributes[PrefixKey];
+  const bucket = event.attributes[BucketKey];
   const width = parseInt(event.attributes[WidthKey] || '1600');
   const height = parseInt(event.attributes[HeightKey] || '1600');
   const screenshot = await takeScreenshot(uri, width, height)
   console.log('captured.')
   const key = `${prefix}${format(new Date)}.jpg`;
-  save(screenshot, key).catch(console.error);
+  save(bucket, screenshot, key).catch(console.error);
   console.log('saved.')
 }
 
