@@ -1,4 +1,4 @@
-import { Context } from '@google-cloud/functions-framework/build/src/functions';
+import { CloudFunctionsContext } from '@google-cloud/functions-framework/build/src/functions';
 import { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher';
 import { Storage } from '@google-cloud/storage';
 import puppeteer from 'puppeteer';
@@ -19,7 +19,7 @@ const format = (date: Date): string => {
   return `${yyyy}/${MM}/${dd}-${hh}${mm}${ss}`;
 };
 
-const takeScreenshot = async (uri: string, width: number, height: number): Promise<Buffer> => {
+const takeScreenshot = async (uri: string, width: number, height: number, log: (msg: string) => void): Promise<Buffer> => {
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox'],
@@ -29,7 +29,7 @@ const takeScreenshot = async (uri: string, width: number, height: number): Promi
   await page.goto(uri, {
     'waitUntil' : 'networkidle0',
   });
-  console.log('navigated.')
+  log('navigated.')
   return (await page.screenshot({type: 'jpeg'}) as Buffer);
 }
 
@@ -38,8 +38,9 @@ const save = async (bucket: string, screenshot: Buffer, key: string) => {
   await storage.bucket(bucket).file(key).save(screenshot);
 }
 
-const main = async (event: PubsubMessage, ctx: Context) => {
-  console.log('start')
+const main = async (event: PubsubMessage, ctx: CloudFunctionsContext) => {
+  const log = (msg: string) => { console.log(ctx.eventId, msg); }
+  log('start');
 //  if (!event.data) throw 'data is empty';
 //  console.log(Buffer.from(event.data as string, 'base64').toString())
   if (!event.attributes || !event.attributes[UriKey] || !event.attributes[PrefixKey] || !event.attributes[BucketKey]) {
@@ -50,11 +51,11 @@ const main = async (event: PubsubMessage, ctx: Context) => {
   const bucket = event.attributes[BucketKey];
   const width = parseInt(event.attributes[WidthKey] || '1600');
   const height = parseInt(event.attributes[HeightKey] || '1600');
-  const screenshot = await takeScreenshot(uri, width, height)
-  console.log('captured.')
+  const screenshot = await takeScreenshot(uri, width, height, log)
+  log('captured.');
   const key = `${prefix}${format(new Date)}.jpg`;
   save(bucket, screenshot, key).catch(console.error);
-  console.log('saved.')
+  log('saved.');
 }
 
 module.exports = {
