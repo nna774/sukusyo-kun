@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --entry=./index.ts && cp -f ./package.json ./dist",
-    "deploy": "gcloud functions deploy sukusyo-kun --source=./dist --entry-point=main --runtime=nodejs14 --project=united-crane-800 --trigger-topic=sukusyo-kun --service-account=sukusyo-kun@united-crane-800.iam.gserviceaccount.com --memory 1GB",
+    "deploy": "gcloud functions deploy sukusyo-kun --retry --source=./dist --entry-point=main --runtime=nodejs14 --project=united-crane-800 --trigger-topic=sukusyo-kun --service-account=sukusyo-kun@united-crane-800.iam.gserviceaccount.com --memory 1GB",
     "log": "gcloud functions logs read --project=united-crane-800 sukusyo-kun",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
