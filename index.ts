@@ -55,7 +55,7 @@ const main = async (event: PubsubMessage, ctx: CloudFunctionsContext) => {
   log('captured.');
   const key = `${prefix}${format(new Date)}.jpg`;
   save(bucket, screenshot, key).catch(console.error);
-  log('saved.');
+  log(`saved(bucket: ${bucket}, key: ${key})`);
 }
 
 module.exports = {
