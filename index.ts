@@ -35,7 +35,7 @@ const takeScreenshot = async (uri: string, width: number, height: number, log: (
 
 const save = async (bucket: string, screenshot: Buffer, key: string) => {
   const storage = new Storage();
-  await storage.bucket(bucket).file(key).save(screenshot);
+  await storage.bucket(bucket).file(key).save(screenshot, {resumable: false});
 }
 
 const main = async (event: PubsubMessage, ctx: CloudFunctionsContext) => {
